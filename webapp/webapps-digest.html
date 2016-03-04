@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html manifest="./webapps-digest.appcache">
+	<head>
+		<meta charset="UTF-8">
+		<title>Digest</title>
+		<link rel="stylesheet" type="text/css" href="./libs/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="./libs/bootstrap-multiselect/bootstrap-multiselect.css" />
+		<link rel="stylesheet" type="text/css" href="./webapps-digest.css" />
+	</head>
+	<body>
+
+<div id="digest-toolbar">
+	<select id="digest-type-select" class="form-control"></select>
+
+	<button id="digest-files-button" class="btn btn-primary">
+		<span class="glyphicon glyphicon-file"></span>
+		<span>Ajouter des fichiers</span>
+	</button>
+	<input id="digest-files-input" type="file" multiple />
+
+	<a id="digest-download-button" href="#" download="CHECKSUMS" class="btn btn-default">
+		<span class="glyphicon glyphicon-download"></span>
+		<span>Télécharger</span>
+	</a>
+
+	<button id="digest-clear-button" class="btn btn-default">
+		<span class="glyphicon glyphicon-remove"></span>
+		<span>Vider</span>
+	</button>
+	
+	<input id="digest-compare-input" class="form-control" type="text" placeholder="Valeur à vérifier" />
+</div>
+
+<div id="digest-progress">
+	<div aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+</div>
+
+<table id="digest-table" class="table">
+	<thead>
+		<tr>
+			<th>Résultat</th>
+			<th>Fichier</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+<div id="digest-copyright">
+	Développé par <a target="_blank" href="https://techgp.fr:9001">Tech GP</a>
+	grâce à <a target="_blank" href="http://jquery.com/">jQuery</a>,
+	<a target="_blank" href="http://getbootstrap.com/css/">Bootstrap</a>,
+	<a target="_blank" href="https://github.com/digitalbazaar/forge">Forge</a> et
+	<a target="_blank" href="http://davidstutz.github.io/bootstrap-multiselect/">Bootstrap Multiselect</a>.
+</div>
+
+		<script type="text/javascript" src="./libs/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="./libs/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./libs/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+		<script type="text/javascript" src="./libs/forge/yuicompressor-forge-min.js"></script>
+		<script type="text/javascript" src="./webapps-digest.js"></script>
+	</body>
+</html>
