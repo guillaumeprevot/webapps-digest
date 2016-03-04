@@ -4,7 +4,7 @@ File integrity checker using MD5, SHA-1, SHA-256, SHA-384 &amp; SHA-512 digester
 
 ## Présentation
 
-[Cette application](./webapp/webapps-digest.html) vous permettra de contrôler l'intégrité de fichiers, par exemple téléchargés sur Internet, en calculant leurs [sommes de contrôle](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le).
+[Cette application](./webapp/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple téléchargés sur Internet.
 
 L'application supporte les algorithmes suivants :
 
@@ -27,11 +27,17 @@ NB : quand le certificat HTTPS est incorrect, la mise en cache échouera sous Ch
 
 ## Captures d'écran
 
-![Présentation de l'IHM](./screenshots/webapps-digest-1.png "Présentation de l'IHM")
+### Présentation de l'IHM
 
-![Exemple de recherche/comparaison](./screenshots/webapps-digest-2.png "Exemple de recherche/comparaison")
+![Présentation de l'IHM](./screenshots/webapps-digest-1.png)
 
-![Interface responsive et barre de progression](./screenshots/webapps-digest-3.png "Interface responsive et barre de progression")
+### Exemple de recherche/comparaison
+
+![Exemple de recherche/comparaison](./screenshots/webapps-digest-2.png)
+
+### Interface responsive et barre de progression
+
+![Interface responsive et barre de progression](./screenshots/webapps-digest-3.png)
 
 ## Intégration à Play
 
