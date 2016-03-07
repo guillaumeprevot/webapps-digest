@@ -4,7 +4,7 @@ File integrity checker using MD5, SHA-1, SHA-256, SHA-384 &amp; SHA-512 digester
 
 ## Présentation
 
-[Cette application](./webapp/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple téléchargés sur Internet.
+[Cette application](http://techgp.fr/webapps/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple téléchargés sur Internet.
 
 L'application supporte les algorithmes suivants :
 
