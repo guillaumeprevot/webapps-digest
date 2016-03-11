@@ -109,6 +109,16 @@ function Progress(progressBar) {
 	};
 }
 
+function formatFileSize(size) {
+	if (size < 1024)
+		return size.toString();
+	if (size < 1024 * 1024)
+		return (size / 1024).toPrecision(3) + ' Ko';
+	if (size < 1024 * 1024 * 1024)
+		return (size / 1024 / 1024).toPrecision(3) + ' Mo';
+	return (size / 1024 / 1024 / 1024).toPrecision(3) + ' Go';
+}
+
 $(function() {
 	var digestAlgorithms = [];
 	digestAlgorithms.push({name: 'md5', title: 'MD5'});
@@ -146,7 +156,7 @@ $(function() {
 
 	$('#digest-compare-input').on('change', function() {
 		var compareValue = this.value;
-		$('#digest-table > tbody > tr > td:first-child').each(function(index) {
+		$('#digest-table > tbody > tr > td.result').each(function(index) {
 			$(this).parent().toggleClass('success', this.innerHTML === compareValue);
 		});
 	}).on('focus', function() {
@@ -160,8 +170,8 @@ $(function() {
 
 	$('#digest-download-button').on('click', function() {
 		var text = $('#digest-table tbody tr').map(function(index) {
-			var cells = $(this).children();
-			return cells[0].innerHTML + '\t' + cells[1].innerHTML;
+			var self = $(this);
+			return self.children('.result')[0].innerHTML + '\t' + self.children()[0].innerHTML;
 		}).get().join('\n');
 
 		$(this).attr('download', 'CHECKUMS.' + $('#digest-type-select').val())
@@ -182,8 +192,9 @@ $(function() {
 		new Digest(files, digest, function(file, hash) {
 				$('<tr />')
 					.toggleClass('success', hash === compareValue)
-					.append('<td>' + hash + '</td>')
 					.append('<td>' + file.name + '</td>')
+					.append('<td>' + formatFileSize(file.size) + '</td>')
+					.append('<td class="result">' + hash + '</td>')
 					.appendTo(tbody);
 		}, new Progress(progressBar));
 	}
