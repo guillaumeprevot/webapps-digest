@@ -3,28 +3,12 @@ function Digest(files, digest, callback, progress) {
 		return;
 
 	var reader = new FileReader(),
-		sliceSize, // number of bytes FileReader will read on each loop
-		chunksize, // number of bytes Forge will digest on each loop
-		totalSize = 0,
+		readBinaryString = (typeof reader.readAsBinaryString !== 'undefined'),
+		sliceSize = readBinaryString ? (10 * 1024 * 1024) : (64 * 1024), // FileReader will read 10Mo (binary) or 64Ko (buffer) on each loop
+		totalSize = $.makeArray(files).reduce(function(cumul, file) { return cumul + file.size; }, 0),
 		doneSize = 0,
 		fileIndex = 0,
 		fileOffset;
-
-	// sliceSize is the number of bytes each FileReader.read*** call will load.
-	// It only depends on available memory so 10MB seems OK
-	sliceSize = 64 * 1024;//10 * 1024 * 1024;
-
-	// chunkSize, is the number of bytes each Forge digest call can use.
-	// The method uses String.fromCharCode.apply(...) and thus, chunkSize is limited to the number of arguments.
-	// Too large values would throw : "RangeError: arguments array passed to Function.prototype.apply is too large"
-	// 64Ko seems OK on different browsers
-	chunksize = 64 * 1024;
-
-	// totalSize is the cumulative size of all files.
-	// This is used to show progress
-	$.each(files, function(index, file) {
-		totalSize += file.size;
-	});
 
 	function digestResult(event) {
 		// event.target.result est :
@@ -32,24 +16,24 @@ function Digest(files, digest, callback, progress) {
 		// - readAsArrayBuffer : un ArrayBuffer
 		// - readAsBinaryString : une chaine binaire (pas très lisible)
 		// - readAsText : une chaine (UTF-8 par défaut mais readAsText a un 2ème param)
-
-		// Digest a large "buffer" into smaller "chunks"
-		var buffer = event.target.result,
-			array = new Uint8Array(buffer);
-		for (var i = 0; i < array.length; i += chunksize) {
-			// Digest chunk
-			var chunk = array.slice(i, i + chunksize);
-			//digest.update(forge.util.binary.raw.encode(chunk));
-			digest.update(String.fromCharCode.apply(null, chunk));
-			// Update progress
-			doneSize += chunk.length;
-			if (progress)
-				progress.onprogress(doneSize, totalSize, chunk.length) 
+		var result = event.target.result, resultSize;
+		if (readBinaryString) {
+			digest.update(result, 'raw');
+			resultSize = result.length;
+		} else {
+			var array = new Uint8Array(result);
+			//digest.update(forge.util.binary.raw.encode(array));
+			digest.update(String.fromCharCode.apply(null, array));
+			resultSize = array.length;
 		}
+		// Update progress
+		doneSize += resultSize;
+		if (progress)
+			progress.onprogress(doneSize, totalSize) 
 		// Move forward
-		fileOffset += sliceSize;
+		fileOffset += resultSize;
 		if (fileOffset < files[fileIndex].size)
-			digestNextChunk();
+			digestNextSlice();
 		else {
 			var value = digest.digest().toHex();
 			callback(files[fileIndex], value);
@@ -64,15 +48,18 @@ function Digest(files, digest, callback, progress) {
 		}
 	}
 
-	function digestNextChunk() {
-		var chunk = files[fileIndex].slice(fileOffset, fileOffset + sliceSize);
-		reader.readAsArrayBuffer(chunk);
+	function digestNextSlice() {
+		var slice = files[fileIndex].slice(fileOffset, fileOffset + sliceSize);
+		if (readBinaryString)
+			reader.readAsBinaryString(slice);
+		else
+			reader.readAsArrayBuffer(slice);
 	}
 
 	function digestNextFile() {
 		digest.start();
 		fileOffset = 0;
-		digestNextChunk();
+		digestNextSlice();
 	}
 
 	reader.onload = digestResult;
@@ -98,7 +85,7 @@ function Progress(progressBar) {
 		progressPct = 0;
 		progressInterval = setInterval(refresh, 200);
 	};
-	this.onprogress = function(done, total, step) {
+	this.onprogress = function(done, total) {
 		progressPct = done * 100.0 / total;
 	};
 	this.onstop = function() {
