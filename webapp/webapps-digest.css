@@ -5,7 +5,7 @@ body { padding-top: 54px; }
 
 #digest-toolbar { position: fixed; left: 0; top: 0; right: 0; padding: 10px; background-color: #333; color: white; height: 54px; }
 #digest-toolbar > #digest-files-input { display: none; }
-#digest-toolbar > #digest-compare-input { float: right; width: 150px; display: inline-block; }
+#digest-toolbar > #digest-compare-input { float: right; width: 125px; display: inline-block; text-align: right; }
 
 #digest-progress { display: none; margin: 10px; }
 #digest-progress > div { width: 0; float: left; font-size: 12px; color: #fff; text-align: left; background-color: #337ab7; padding: 5px 10px; border-radius: 4px; }
