@@ -78,20 +78,24 @@ Pour intégrer à [Play](https://www.playframework.com/), il faut :
     }
     ```
 
+## Licence
+
+Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ici présent.
+
 ## Changelog
 
 2016-03-04
-- Première version
+- première version
 
 2016-03-07
-- Amélioration de l'interface sur téléphone mobile
-- Déploiement d'une version en production
+- amélioration de l'interface sur téléphone mobile
+- déploiement d'une version en production
 
 2016-03-11
-- Affichage de la taille des fichiers
+- affichage de la taille des fichiers
 
 2016-03-18
-- Ajout du favicon
+- ajout du favicon
 
 2016-04-10
 - MAJ de Forge en verion 0.6.39 (corrige un problème de calcul erroné des hash)
@@ -105,3 +109,6 @@ Pour intégrer à [Play](https://www.playframework.com/), il faut :
 - ajout de la section CHANGELOG dans le README
 - mise à jour des captures d'écran
 - mise à jour de jQuery en 2.2.4
+
+2016-06-28
+- ajout du fichier LICENCE
