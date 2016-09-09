@@ -1,3 +1,5 @@
+"use strict";
+
 function Digest(files, checksums, defaultAlgorithm, compareValue, callback, progress) {
 	if (!files || files.length == 0)
 		return;
@@ -141,12 +143,16 @@ function extractChecksums(files, algorithms, callback) {
 		fixLineSeparators.split('\n').forEach(function(line) {
 			var fields = line.trim().split(' ');
 			if (fields.length === 2) {
-				var e = results[fields[1]];
+				var checksum = fields[0];
+				var filename = fields[1];
+				if (filename.charAt(0) === '*')
+					filename = filename.substring(1);
+				var e = results[filename];
 				if (!e)
-					e = results[fields[1]] = { filename: fields[1] };
+					e = results[filename] = { filename: filename };
 				if (!e.algorithm || (algorithms.indexOf(e.algorithm) < algorithms.indexOf(algorithm))) {
 					e.algorithm = algorithm;
-					e.checksum = fields[0];
+					e.checksum = checksum;
 				}
 			}
 		})

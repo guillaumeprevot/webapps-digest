@@ -112,3 +112,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2016-06-28
 - ajout du fichier LICENCE
+
+2016-09-09
+- vérification de la présence du caractère "*" parfois présent devant le nom de fichier dans les fichiers de checksum
