@@ -135,6 +135,16 @@ function extractChecksums(files, algorithms, callback) {
 	var algorithm = '';
 	var results = {};
 
+	function cleanFileName(filename) {
+		// Remove optional '*' at the beginning
+		if (filename.charAt(0) === '*')
+			filename = filename.substring(1);
+		// Remove path
+		if (filename.lastIndexOf('/') >= 0)
+			filename = filename.substring(filename.lastIndexOf('/') + 1);
+		return filename;
+	}
+
 	function nextChecksumResult(event) {
 		// avec readAsText, event.target.result est une chaine (UTF-8 par défaut mais readAsText a un 2ème param)
 		var result = event.target.result;
@@ -144,9 +154,7 @@ function extractChecksums(files, algorithms, callback) {
 			var fields = line.trim().split(' ');
 			if (fields.length === 2) {
 				var checksum = fields[0];
-				var filename = fields[1];
-				if (filename.charAt(0) === '*')
-					filename = filename.substring(1);
+				var filename = cleanFileName(fields[1]);
 				var e = results[filename];
 				if (!e)
 					e = results[filename] = { filename: filename };
@@ -260,6 +268,33 @@ $(function() {
 		$('#digest-table tbody').empty().parent().hide();
 	});
 
+	$('#digest-table thead th').on('click', function(event) {
+		var results = $('#digest-table tbody tr').get().map(function (tr) { return $(tr).data('result'); });
+		var tbody = $('#digest-table tbody').empty();
+		var field = $(event.target).attr('data-sort');
+		var ascending = (tbody.data('sort-field') !== field) || (tbody.data('sort-ascending') === false);
+		var compare = (field === 'size') ? function(v1, v2) { return v1-v2; } : function(v1, v2) { return v1.localeCompare(v2); };
+		tbody.data('sort-field', field).data('sort-ascending', ascending);
+		results.sort(function(r1, r2) { return compare(r1[field], r2[field]); });
+		if (!ascending)
+			results.reverse();
+		results.forEach(function(result) {
+			showResult(tbody, result);
+		});
+	});
+
+	function showResult(tbody, result) {
+		$('<tr />')
+			.data('result', result)
+			.toggleClass('danger', (result.expectedHash !== '') && (result.hash !== result.expectedHash))
+			.toggleClass('success', (result.expectedHash !== '') && (result.hash === result.expectedHash))
+			.append('<td>' + result.name + '</td>')
+			.append('<td>' + formatFileSize(result.size) + '</td>')
+			.append('<td>' + digestAlgorithms.filter(function(a) { return a.name === result.algorithm; })[0].title + '</td>')
+			.append('<td class="result">' + result.hash + '</td>')
+			.appendTo(tbody);
+	}
+
 	function digestFiles(files) {
 		// Récupérer les checksums dans les fichiers, si disponibles
 		extractChecksums(files, digestAlgorithms.map(function(a) { return a.name; }), function(results) {
@@ -272,16 +307,9 @@ $(function() {
 				compareValue = $('#digest-compare-input').val();
 
 			new Digest(files, results, algorithm, compareValue, function(file, algorithm, hash, expectedHash) {
-				$('<tr />')
-					.toggleClass('danger', (expectedHash !== '') && (hash !== expectedHash))
-					.toggleClass('success', (expectedHash !== '') && (hash === expectedHash))
-					.append('<td>' + file.name + '</td>')
-					.append('<td>' + formatFileSize(file.size) + '</td>')
-					.append('<td>' + digestAlgorithms.filter(function(a) { return a.name === algorithm; })[0].title + '</td>')
-					.append('<td class="result">' + hash + '</td>')
-					.appendTo(tbody);
+				showResult(tbody, {name: file.name, size: file.size, algorithm: algorithm, hash: hash, expectedHash: expectedHash});
 			}, new Progress(progressBar));
 		});
 	}
-
 });
+

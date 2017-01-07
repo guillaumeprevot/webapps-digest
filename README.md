@@ -115,3 +115,7 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2016-09-09
 - vérification de la présence du caractère "*" parfois présent devant le nom de fichier dans les fichiers de checksum
+
+2017-01-07
+- ajout de la possibilité de trier les résultats en cliquant sur les en-têtes de colonnes
+- amélioration du nettoyage des noms de fichier dans les fichiers de checksums (retrait du chemin en + de '*')
