@@ -16,9 +16,9 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [jQuery 2.2.4](http://jquery.com/)
-- [Bootstrap 3.3.6](http://getbootstrap.com/css/)
-- [Forge 0.6.39](https://github.com/digitalbazaar/forge)
+- [jQuery 3.2.1](http://jquery.com/)
+- [Bootstrap 3.3.7](http://getbootstrap.com/css/)
+- [Forge 0.6.49](https://github.com/digitalbazaar/forge)
 - [Bootstrap Multiselect 0.9.13](https://github.com/davidstutz/bootstrap-multiselect)
 
 Une fois affichée une première fois, l'application continue de fonctionner en mode déconnecté.
@@ -119,3 +119,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 2017-01-07
 - ajout de la possibilité de trier les résultats en cliquant sur les en-têtes de colonnes
 - amélioration du nettoyage des noms de fichier dans les fichiers de checksums (retrait du chemin en + de '*')
+
+2017-05-21
+- mise à jour de jQuery (2.2.4 en 3.2.1), Bootstrap (3.3.6 en 3.3.7) et Forge (0.6.39 en 0.6.49)
