@@ -21,7 +21,7 @@ Les librairies suivantes sont utilisées pour cette application :
 - [Forge 0.6.49](https://github.com/digitalbazaar/forge)
 - [Bootstrap Multiselect 0.9.13](https://github.com/davidstutz/bootstrap-multiselect)
 
-Une fois affichée une première fois, l'application continue de fonctionner en mode déconnecté.
+Une fois affichée une première fois, l'application continue de fonctionner en mode déconnecté grâce à AppCache (plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache) ).
 
 ## Captures d'écran
 
@@ -40,43 +40,6 @@ Une fois affichée une première fois, l'application continue de fonctionner en 
 ### Interface responsive et barre de progression
 
 ![webapps-digest-4.png](./screenshots/webapps-digest-4.png)
-
-## Notes techniques
-
-### Mise en cache
-
-Le fichier `webapps-digest.appcache` décrit comment mettre l'application en cache. Plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache).
-
-Quand le certificat HTTPS est incorrect, la mise en cache échouera sous Chrome avec l'erreur `Manifest fetch Failed (9)`. Dans ce cas, faites les tests en HTTP et/ou utilisez un certificat valide en production.
-
-### Intégration à Play
-
-Pour intégrer à [Play](https://www.playframework.com/), il faut :
-
-1. Déposer les 4 fichiers dans le dossier `public`
-
-    - webapps-digest.appcache
-    - webapps-digest.css
-    - webapps-digest.html
-    - webapps-digest.js
-
-2. Pour que la mise en cache se fasse, le type mime `text/cache-manifest` doit être renvoyé pour le fichier `appcache`. On ajoute donc une règle au fichier `routes`
-
-    ```
-    GET		/assets/webapps-digest.appcache		controllers.Application.manifest(path: String = "webapps-digest.appcache")
-    ```
-
-3. L'implémentation ressemble à ça :
-
-    ```java
-    public class Application extends Controller {
-
-    	public final Result manifest(String path) {
-    		return ok(Play.current().getFile("public/" + path)).as("text/cache-manifest");
-    	}
-
-    }
-    ```
 
 ## Licence
 
@@ -125,3 +88,4 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2017-07-15
 - vérification des checksums non sensible à la casse
+- suppression de la partie liée à [Play](https://www.playframework.com/) dans README.md
