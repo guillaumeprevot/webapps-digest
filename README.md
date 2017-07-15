@@ -122,3 +122,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2017-05-21
 - mise à jour de jQuery (2.2.4 en 3.2.1), Bootstrap (3.3.6 en 3.3.7) et Forge (0.6.39 en 0.6.49)
+
+2017-07-15
+- vérification des checksums non sensible à la casse

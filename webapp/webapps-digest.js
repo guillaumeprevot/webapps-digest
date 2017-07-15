@@ -240,7 +240,7 @@ $(function() {
 	});
 
 	$('#digest-compare-input').on('change', function() {
-		var compareValue = this.value;
+		var compareValue = this.value.toLowerCase();
 		$('#digest-table > tbody > tr > td.result').each(function(index) {
 			$(this).parent()
 				.toggleClass('success', this.innerHTML === compareValue)
@@ -286,8 +286,8 @@ $(function() {
 	function showResult(tbody, result) {
 		$('<tr />')
 			.data('result', result)
-			.toggleClass('danger', (result.expectedHash !== '') && (result.hash !== result.expectedHash))
-			.toggleClass('success', (result.expectedHash !== '') && (result.hash === result.expectedHash))
+			.toggleClass('danger', (result.expectedHash !== '') && (result.hash !== result.expectedHash.toLowerCase()))
+			.toggleClass('success', (result.expectedHash !== '') && (result.hash === result.expectedHash.toLowerCase()))
 			.append('<td>' + result.name + '</td>')
 			.append('<td>' + formatFileSize(result.size) + '</td>')
 			.append('<td>' + digestAlgorithms.filter(function(a) { return a.name === result.algorithm; })[0].title + '</td>')
