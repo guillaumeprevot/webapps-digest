@@ -21,7 +21,9 @@ Les librairies suivantes sont utilisées pour cette application :
 - [Forge 0.6.49](https://github.com/digitalbazaar/forge)
 - [Bootstrap Multiselect 0.9.13](https://github.com/davidstutz/bootstrap-multiselect)
 
-Une fois affichée une première fois, l'application continue de fonctionner en mode déconnecté grâce à AppCache (plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache) ).
+L'application peut être utilisée en mode déconnecté après une première utilisation. Le fichier manifest `webapps-digest.appcache` décrit comme doit se faire la mise en cache. Plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache).
+
+NB : quand le certificat HTTPS est incorrect, la mise en cache échouera sous Chrome avec l'erreur `Manifest fetch Failed (9)`. Dans ce cas, faites les tests en HTTP et/ou utilisez un certificat valide en production.
 
 ## Captures d'écran
 
