@@ -4,7 +4,7 @@ File integrity checker using MD5, SHA-1, SHA-256, SHA-384 &amp; SHA-512 digester
 
 ## Présentation
 
-[Cette application](http://techgp.fr/webapps/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet.
+[Cette application](https://techgp.fr/webapps/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet.
 
 L'application supporte les algorithmes suivants :
 
@@ -16,10 +16,25 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [jQuery 3.2.1](http://jquery.com/)
-- [Bootstrap 3.3.7](http://getbootstrap.com/css/)
-- [Forge 0.6.49](https://github.com/digitalbazaar/forge)
-- [Bootstrap Multiselect 0.9.13](https://github.com/davidstutz/bootstrap-multiselect)
+- [Forge 0.7.6](https://github.com/digitalbazaar/forge)
+- [jQuery 3.3.1](https://jquery.com/)
+- [Bootstrap 3.3.7](https://getbootstrap.com/docs/3.3/components/)
+- [Bootstrap Multiselect 0.9.15](https://github.com/davidstutz/bootstrap-multiselect)
+- [DryIcons](https://dryicons.com/) pour le favicon
+
+La version de `Forge` utilisée est une version réduite pour n'inclure que ce qui nous intéresse (MD5 et SHA). Pour cela, la cible `webpack` suivante a été ajoutée dans `webpack.config.js` avant de construire `Forge` :
+
+```javascript
+const outputs = [
+
+  {
+    entry: ['./lib/md5.js', './lib/sha1.js', './lib/sha256.js', './lib/sha512.js', './lib/forge.js'],
+    filenameBase: 'forge-custom-digest',
+    libraryTarget: 'umd'
+  }
+
+];
+```
 
 L'application peut être utilisée en mode déconnecté après une première utilisation. Le fichier manifest `webapps-digest.appcache` décrit comme doit se faire la mise en cache. Plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache).
 
@@ -91,3 +106,8 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 2017-07-15
 - vérification des checksums non sensible à la casse
 - suppression de la partie liée à [Play](https://www.playframework.com/) dans README.md
+
+2018-08-26
+- mise à jour de Forge (0.6.49 => 0.7.6), recompilé manuellement avec une cible personnalisée pour "webpack"
+- mise à jour de jQuery (3.2.1 => 3.3.1), Bootstrap Multiselect (0.9.13 => 0.9.15) et renommage de "bootstrap" en "bootstrap3"
+- passage des liens externes en HTTPS
