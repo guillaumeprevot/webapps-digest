@@ -16,13 +16,24 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [Forge 0.7.6](https://github.com/digitalbazaar/forge)
-- [jQuery 3.3.1](https://jquery.com/)
+- [Forge 0.8.2](https://github.com/digitalbazaar/forge)
+- [jQuery 3.4.1](https://jquery.com/)
 - [Bootstrap 3.3.7](https://getbootstrap.com/docs/3.3/components/)
 - [Bootstrap Multiselect 0.9.15](https://github.com/davidstutz/bootstrap-multiselect)
 - [DryIcons](https://dryicons.com/) pour le favicon
 
-La version de `Forge` utilisée est une version réduite pour n'inclure que ce qui nous intéresse (MD5 et SHA). Pour cela, la cible `webpack` suivante a été ajoutée dans `webpack.config.js` avant de construire `Forge` :
+## Compilation de Forge
+
+La version de `Forge` utilisée a été recompilée manuellement pour n'inclure que ce qui nous intéresse (MD5 et SHA)
+
+- récupérer le repository
+
+```bash
+git clone --depth 1 --branch 0.8.2 https://github.com/digitalbazaar/forge.git
+cd forge
+```
+
+- ajouter une cible webpack dans `webpack.config.js` pour n'inclure que ce qu'on souhaite (MD5 et SHA)
 
 ```javascript
 const outputs = [
@@ -35,6 +46,17 @@ const outputs = [
 
 ];
 ```
+
+- construire Forge
+
+```bash
+npm install
+npm run build
+```
+
+Le résultat se trouve dans le dossier `dist`
+
+## Mise en cache (obsolète)
 
 L'application peut être utilisée en mode déconnecté après une première utilisation. Le fichier manifest `webapps-digest.appcache` décrit comme doit se faire la mise en cache. Plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache).
 
@@ -111,3 +133,9 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 - mise à jour de Forge (0.6.49 => 0.7.6), recompilé manuellement avec une cible personnalisée pour "webpack"
 - mise à jour de jQuery (3.2.1 => 3.3.1), Bootstrap Multiselect (0.9.13 => 0.9.15) et renommage de "bootstrap" en "bootstrap3"
 - passage des liens externes en HTTPS
+
+2019-05-03
+- ajout de trace dans la console est cas de problème de lecture du fichier (ça arrive sur les gros fichier après quelque temps et aléatoirement)
+- mise à jour de Forge (0.7.6 => 0.8.2), recompilé manuellement avec une cible personnalisée pour "webpack"
+- mise à jour de jQuery (3.3.1 => 3.4.1)
+- mise à jour README.md

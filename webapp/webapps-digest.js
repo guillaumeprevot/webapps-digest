@@ -34,7 +34,7 @@ function Digest(files, checksums, defaultAlgorithm, compareValue, callback, prog
 		// Update progress
 		doneSize += resultSize;
 		if (progress)
-			progress.onprogress(doneSize, totalSize) 
+			progress.onprogress(doneSize, totalSize);
 		// Move forward
 		fileOffset += resultSize;
 		if (fileOffset < files[fileIndex].size)
@@ -71,12 +71,16 @@ function Digest(files, checksums, defaultAlgorithm, compareValue, callback, prog
 			fileExpectedValue = compareValue;
 		}
 		fileDigest = forge.md[fileAlgorithm].create();
-		fileOffset = 0;
 		fileDigest.start();
+		fileOffset = 0;
 		digestNextSlice();
 	}
 
 	reader.onload = digestResult;
+	reader.onerror = function(event) {
+		console.log('Erreur sur la lecture du fichier ' + files[fileIndex].name);
+		console.log(event);
+	};
 	if (progress)
 		progress.onstart();
 	digestNextFile();
@@ -191,6 +195,10 @@ function extractChecksums(files, algorithms, callback) {
 	}
 
 	reader.onload = nextChecksumResult;
+	reader.onerror = function(event) {
+		console.log('Erreur sur la lecture du fichier de contrôle ' + files[fileIndex].name);
+		console.log(event);
+	};
 	nextChecksumFile();
 }
 
