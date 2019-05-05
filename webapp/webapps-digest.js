@@ -266,12 +266,14 @@ $(function() {
 	});
 
 	$('#digest-download-button').on('click', function() {
+		var algorithm = $('#digest-algorithm-menu .active').attr('data-algorithm');
 		var text = $('#digest-table tbody tr').map(function(index) {
-			var self = $(this);
-			return self.children('.result')[0].innerHTML + '\t' + self.children()[0].innerHTML;
+			var result = $(this).data('result');
+			if (result.algorithm === algorithm)
+				return result.name + '\t' + result.hash;
 		}).get().join('\n');
 
-		$(this).attr('download', 'CHECKUMS.' + $('#digest-algorithm-menu .active').attr('data-algorithm'))
+		$(this).attr('download', 'CHECKUMS.' + algorithm)
 			.attr('href', 'data:text/plain;base64,' + forge.util.encode64(text));
 	}).toggle('download' in document.createElement('a'));
 
