@@ -18,8 +18,8 @@ Les librairies suivantes sont utilisées pour cette application :
 
 - [Forge 0.8.2](https://github.com/digitalbazaar/forge)
 - [jQuery 3.4.1](https://jquery.com/)
-- [Bootstrap 3.3.7](https://getbootstrap.com/docs/3.3/components/)
-- [Bootstrap Multiselect 0.9.15](https://github.com/davidstutz/bootstrap-multiselect)
+- [Bootstrap 4.3.1](https://getbootstrap.com/)
+- [Material Icons](https://material.io/tools/icons) pour les boutons
 - [DryIcons](https://dryicons.com/) pour le favicon
 
 ## Compilation de Forge
@@ -139,3 +139,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 - mise à jour de Forge (0.7.6 => 0.8.2), recompilé manuellement avec une cible personnalisée pour "webpack"
 - mise à jour de jQuery (3.3.1 => 3.4.1)
 - mise à jour README.md
+
+2019-05-05
+- migration vers Bootstrap 4, utilisation de Material Icons au lieu de Glyphicons et suppression de Bootstrap MultiSelect
