@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="./webapps-digest.appcache">
+<html>
 	<head>
 		<title>Digest</title>
 		<meta charset="UTF-8">
@@ -76,5 +76,18 @@
 		<script type="text/javascript" src="./libs/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="./libs/forge/forge-custom-digest.min.js"></script>
 		<script type="text/javascript" src="./webapps-digest.js"></script>
+		<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('./webapps-digest-sw.js').then(function(registration) {
+					// Registration was successful
+					console.log('ServiceWorker registration successful with scope: ', registration.scope);
+				}, function(err) {
+					// registration failed :(
+					console.log('ServiceWorker registration failed: ', err);
+				});
+			});
+		}
+		</script>
 	</body>
 </html>

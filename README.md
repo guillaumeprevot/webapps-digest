@@ -142,4 +142,5 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2019-05-05
 - migration vers Bootstrap 4, utilisation de Material Icons au lieu de Glyphicons et suppression de Bootstrap MultiSelect
+- migration de ApplicationCache vers Service Worker 
 - dans l'export, ne prendre en compte que les lignes dont l'algorithme correspond au fichier exporté
