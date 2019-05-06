@@ -144,3 +144,7 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 - migration vers Bootstrap 4, utilisation de Material Icons au lieu de Glyphicons et suppression de Bootstrap MultiSelect
 - migration de ApplicationCache vers Service Worker 
 - dans l'export, ne prendre en compte que les lignes dont l'algorithme correspond au fichier exporté
+
+2019-05-06
+- hachage des fichiers déplacé dans un "Worker" pour rendre l'IHM plus réactive
+- lecture des fichiers avec "fetch / getReader()" plutôt que "FileReader" et de multiples "slice"

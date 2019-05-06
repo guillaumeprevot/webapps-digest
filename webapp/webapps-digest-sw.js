@@ -3,7 +3,7 @@
  * - GOOGLE : https://developers.google.com/web/fundamentals/primers/service-workers/#update-a-service-worker
  * - MOZILLA : https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
  */
-var cacheName = 'v1';
+var cacheName = 'v2';
 var baseCacheContent = [
 	'./libs/bootstrap/css/bootstrap.min.css',
 	'./libs/bootstrap/js/bootstrap.min.js',
@@ -18,7 +18,8 @@ var baseCacheContent = [
 	'webapps-digest.js',
 	'webapps-digest.html',
 	'webapps-digest.ico',
-	'webapps-digest.png'
+	'webapps-digest.png',
+	'webapps-digest-ww.js'
 ];
 
 function info(text) {

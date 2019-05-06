@@ -1,91 +1,5 @@
 "use strict";
 
-function Digest(files, checksums, defaultAlgorithm, compareValue, callback, progress) {
-	if (!files || files.length == 0)
-		return;
-
-	var reader = new FileReader(),
-		readBinaryString = (typeof reader.readAsBinaryString !== 'undefined'),
-		sliceSize = readBinaryString ? (10 * 1024 * 1024) : (64 * 1024), // FileReader will read 10Mo (binary) or 64Ko (buffer) on each loop
-		totalSize = $.makeArray(files).reduce(function(cumul, file) { return cumul + file.size; }, 0),
-		doneSize = 0,
-		fileIndex = 0,
-		fileOffset,
-		fileAlgorithm,
-		fileDigest,
-		fileExpectedValue;
-
-	function digestResult(event) {
-		// event.target.result est :
-		// - readAsDataURL: une chaine du type "data:text/plain;base64,dGVzdA0KYWJjDQojgCE="
-		// - readAsArrayBuffer : un ArrayBuffer
-		// - readAsBinaryString : une chaine binaire (pas très lisible)
-		// - readAsText : une chaine (UTF-8 par défaut mais readAsText a un 2ème param)
-		var result = event.target.result, resultSize;
-		if (readBinaryString) {
-			fileDigest.update(result, 'raw');
-			resultSize = result.length;
-		} else {
-			var array = new Uint8Array(result);
-			//fileDigest.update(forge.util.binary.raw.encode(array));
-			fileDigest.update(String.fromCharCode.apply(null, array));
-			resultSize = array.length;
-		}
-		// Update progress
-		doneSize += resultSize;
-		if (progress)
-			progress.onprogress(doneSize, totalSize);
-		// Move forward
-		fileOffset += resultSize;
-		if (fileOffset < files[fileIndex].size)
-			digestNextSlice();
-		else {
-			var value = fileDigest.digest().toHex();
-			callback(files[fileIndex], fileAlgorithm, value, fileExpectedValue);
-			fileIndex++;
-			if (fileIndex < files.length)
-				digestNextFile();
-			else {
-				// DONE !
-				if (progress)
-					progress.onstop();
-			}
-		}
-	}
-
-	function digestNextSlice() {
-		var slice = files[fileIndex].slice(fileOffset, fileOffset + sliceSize);
-		if (readBinaryString)
-			reader.readAsBinaryString(slice);
-		else
-			reader.readAsArrayBuffer(slice);
-	}
-
-	function digestNextFile() {
-		var checksum = checksums[files[fileIndex].name];
-		if (checksum) {
-			fileAlgorithm = checksum.algorithm;
-			fileExpectedValue = checksum.checksum;
-		} else {
-			fileAlgorithm = defaultAlgorithm;
-			fileExpectedValue = compareValue;
-		}
-		fileDigest = forge.md[fileAlgorithm].create();
-		fileDigest.start();
-		fileOffset = 0;
-		digestNextSlice();
-	}
-
-	reader.onload = digestResult;
-	reader.onerror = function(event) {
-		console.log('Erreur sur la lecture du fichier ' + files[fileIndex].name);
-		console.log(event);
-	};
-	if (progress)
-		progress.onstart();
-	digestNextFile();
-}
-
 /**
  * Classe responsable de l'affichage de la progression.
  * 
@@ -101,7 +15,7 @@ function Progress(progressBar) {
 		progressBar.attr('aria-valuenow', '0').css('width', '0').html('');
 		progressBar.parent().show();
 		progressPct = 0;
-		progressInterval = setInterval(refresh, 200);
+		progressInterval = setInterval(refresh, 1000);
 	};
 	this.onprogress = function(done, total) {
 		progressPct = done * 100.0 / total;
@@ -315,13 +229,30 @@ $(function() {
 
 			// Une fois récupéré ce qu'on peut, commencer à vérifier les fichiers
 			var tbody = $('#digest-table tbody'),
-				progressBar = $('#digest-progress').children(),
+				progress = new Progress($('#digest-progress').children()),
 				algorithm = $('#digest-algorithm-menu .active').attr('data-algorithm'),
 				compareValue = $('#digest-compare-input').val();
 
-			new Digest(files, results, algorithm, compareValue, function(file, algorithm, hash, expectedHash) {
-				showResult(tbody, {name: file.name, size: file.size, algorithm: algorithm, hash: hash, expectedHash: expectedHash});
-			}, new Progress(progressBar));
+			var worker = new Worker('webapps-digest-ww.js');
+			worker.postMessage({
+				files: files,
+				checksums: results,
+				defaultAlgorithm: algorithm,
+				compareValue: compareValue
+			});
+			worker.onmessage = function(event) {
+				if (event.data.type === 'start') {
+					progress.onstart();
+				} else if (event.data.type === 'progress') {
+					progress.onprogress(event.data.done, event.data.total);
+				} else if (event.data.type === 'result') {
+					showResult(tbody, { name: event.data.file.name, size: event.data.file.size, algorithm: event.data.algorithm, hash: event.data.hash, expectedHash: event.data.expectedHash});
+				} else if (event.data.type === 'stop') {
+					progress.onstop();
+				} else {
+					console.log('unexpected message', event.data);
+				}
+			};
 		});
 	}
 });
