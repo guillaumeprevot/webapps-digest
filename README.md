@@ -16,9 +16,10 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [Forge 0.8.2](https://github.com/digitalbazaar/forge)
+- [Forge 0.9.1](https://github.com/digitalbazaar/forge)
 - [jQuery 3.4.1](https://jquery.com/)
-- [Bootstrap 4.3.1](https://getbootstrap.com/)
+- [Bootstrap 4.4.1](https://getbootstrap.com/)
+- [Popper 1.16.1](https://popper.js.org/), dépendance de Bootstrap 4
 - [Material Icons](https://material.io/tools/icons) pour les boutons
 - [DryIcons](https://dryicons.com/) pour le favicon
 
@@ -29,7 +30,7 @@ La version de `Forge` utilisée a été recompilée manuellement pour n'inclure 
 - récupérer le repository
 
 ```bash
-git clone --depth 1 --branch 0.8.2 https://github.com/digitalbazaar/forge.git
+git clone --depth 1 --branch 0.9.1 https://github.com/digitalbazaar/forge.git
 cd forge
 ```
 
@@ -56,19 +57,13 @@ npm run build
 
 Le résultat se trouve dans le dossier `dist`
 
-## Mise en cache (obsolète)
-
-L'application peut être utilisée en mode déconnecté après une première utilisation. Le fichier manifest `webapps-digest.appcache` décrit comme doit se faire la mise en cache. Plus d'info chez Mozilla [en français](https://developer.mozilla.org/fr/docs/Utiliser_Application_Cache) ou [en anglais](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache).
-
-NB : quand le certificat HTTPS est incorrect, la mise en cache échouera sous Chrome avec l'erreur `Manifest fetch Failed (9)`. Dans ce cas, faites les tests en HTTP et/ou utilisez un certificat valide en production.
-
 ## Captures d'écran
 
 ### Présentation générale
 
 ![webapps-digest-1.png](./screenshots/webapps-digest-1.png)
 
-### Exemple de recherche/comparaison
+### Exemple de vérification manuelle d'un hash
 
 ![webapps-digest-2.png](./screenshots/webapps-digest-2.png)
 
@@ -148,3 +143,10 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 2019-05-06
 - hachage des fichiers déplacé dans un "Worker" pour rendre l'IHM plus réactive
 - lecture des fichiers avec "fetch / getReader()" plutôt que "FileReader" et de multiples "slice"
+
+2020-04-08
+- ajustement de la barre d'outils en flex pour mieux gérer la taille de la zone de recherche
+- ajustement de l'ordre des colonnes et de la gestion des espaces dans la grille
+- correction de l'ordre des colonnes dans le fichier exporté (les hash à gauche et les noms de fichiers à droite)
+- correction de la lecture des fichiers de hash en cas d'espace dans le nom des fichiers
+- mise à jour de Bootstrap (4.4.1), Popper (1.16.1) et Forge (0.9.1)

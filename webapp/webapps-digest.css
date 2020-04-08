@@ -3,10 +3,11 @@
 html { width: 100%; height: 100%; }
 body { width: 100%; height: 100%; display: flex; flex-direction: column; }
 
-#digest-toolbar { flex: none; padding: 10px; }
+#digest-toolbar { flex: none; padding: 0.4rem 0.2rem; display: flex; }
+#digest-toolbar > * { flex: none; margin: 0 0.2rem; }
 #digest-toolbar > div.dropdown { display: inline-block; }
 #digest-toolbar > #digest-files-input { display: none; }
-#digest-toolbar > #digest-compare-input { float: right; width: 145px; display: inline-block; }
+#digest-toolbar > #digest-compare-input { flex: auto; height: 100%; background-color: transparent; color: white; }
 
 #digest-progress { flex: none; display: none; margin: 10px; }
 #digest-progress > div { width: 0; float: left; font-size: 12px; text-align: left; padding: 5px 10px; border-radius: 4px; }
@@ -14,6 +15,7 @@ body { width: 100%; height: 100%; display: flex; flex-direction: column; }
 #digest-table { flex: auto; }
 #digest-table th { cursor: pointer; }
 #digest-table td.result { font-family: Courier, monospace; }
+#digest-table td:not(.result) { white-space: nowrap; }
 
 #digest-copyright { flex: none; padding: 5px 10px; background-color: white; text-align: right; font-size: smaller; }
 

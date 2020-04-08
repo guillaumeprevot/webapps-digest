@@ -2,7 +2,7 @@
 
 /**
  * Classe responsable de l'affichage de la progression.
- * 
+ *
  * NB : on n'utilise pas les classes de Bootstrap "progress" et "progress-bar" car le dessin fait perdre un temps non négligeable (par exemple : 8.8s -> 10.8s).
  * Si toutefois on le voulait, il suffirait d'ajouter les classes aux 2 div et de retirer le style dans la feuille CSS.
  */
@@ -39,7 +39,7 @@ function Progress(progressBar) {
  *   },
  *   ...
  * }
- * 
+ *
  * @param {File[]} files - the list of file
  * @param {String[]} algorithms - the list of checkum file extensions, weaker first, stronger last (['md5', 'sha1', 'sha256'] for instance)
  * @param {Function(results)} callback - the callback to call when data has been extracted
@@ -69,10 +69,10 @@ function extractChecksums(files, algorithms, callback) {
 		var fixColumnSeparators = result.replace(/\t/g, ' ').replace(/[ ]+/g, ' ');
 		var fixLineSeparators = fixColumnSeparators.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 		fixLineSeparators.split('\n').forEach(function(line) {
-			var fields = line.trim().split(' ');
-			if (fields.length === 2) {
-				var checksum = fields[0];
-				var filename = cleanFileName(fields[1]);
+			var l = line.trim(), i = l.indexOf(' ');
+			if (i > 0) {
+				var checksum = l.substring(0, i);
+				var filename = cleanFileName(l.substring(i + 1));
 				var e = results[filename];
 				if (!e)
 					e = results[filename] = { filename: filename };
@@ -128,11 +128,11 @@ function formatFileSize(size) {
 
 $(function() {
 	var digestAlgorithms = [];
-	digestAlgorithms.push({name: 'md5', title: 'MD5'});
-	digestAlgorithms.push({name: 'sha1', title: 'SHA-1', isDefault: true });
-	digestAlgorithms.push({name: 'sha256', title: 'SHA-256'});
-	digestAlgorithms.push({name: 'sha384', title: 'SHA-384'});
-	digestAlgorithms.push({name: 'sha512', title: 'SHA-512'});
+	digestAlgorithms.push({name: 'md5', title: 'MD5', hashSize: 128, split: false });
+	digestAlgorithms.push({name: 'sha1', title: 'SHA-1', hashSize: 160, split: 20, isDefault: true });
+	digestAlgorithms.push({name: 'sha256', title: 'SHA-256', hashSize: 256, split: 32 });
+	digestAlgorithms.push({name: 'sha384', title: 'SHA-384', hashSize: 384, split: 32 });
+	digestAlgorithms.push({name: 'sha512', title: 'SHA-512', hashSize: 512, split: 32 });
 
 	$('#digest-algorithm-menu').append($.map(digestAlgorithms, function(digest, index) {
 		if (digest.isDefault)
@@ -167,16 +167,10 @@ $(function() {
 	$('#digest-compare-input').on('change', function() {
 		var compareValue = this.value.toLowerCase();
 		$('#digest-table td.result').each(function(index) {
-			$(this).parent()
-				.toggleClass('table-success', !!compareValue && (this.innerHTML === compareValue))
-				.toggleClass('table-danger', !!compareValue && (this.innerHTML !== compareValue));
+			var tr = $(this).parent(), result = tr.data('result');
+			tr.toggleClass('table-success', !!compareValue && (result.hash === compareValue))
+				.toggleClass('table-danger', !!compareValue && (result.hash !== compareValue));
 		});
-	}).on('focus', function() {
-		$('.dropdown, #digest-files-button, #digest-download-button, #digest-clear-button').hide();
-		$('#digest-compare-input').animate({'width': '100%'});
-	}).on('blur', function() {
-		$('#digest-compare-input').css('width', '');
-		$('.dropdown, #digest-files-button, #digest-download-button, #digest-clear-button').fadeIn();
 	});
 
 	$('#digest-download-button').on('click', function() {
@@ -184,7 +178,7 @@ $(function() {
 		var text = $('#digest-table tbody tr').map(function(index) {
 			var result = $(this).data('result');
 			if (result.algorithm === algorithm)
-				return result.name + '\t' + result.hash;
+				return result.hash + '\t' + result.name;
 		}).get().join('\n');
 
 		$(this).attr('download', 'CHECKUMS.' + algorithm)
@@ -211,14 +205,23 @@ $(function() {
 	});
 
 	function showResult(tbody, result) {
+		var algorithm = digestAlgorithms.filter(function(a) { return a.name === result.algorithm; })[0];
+		var h = result.hash;
+		if (algorithm.split) {
+			var i = result.hash.length - algorithm.split, zeroLengthSpace = '&#8203;';
+			while (i > 0) {
+				h = h.substring(0, i) + zeroLengthSpace + h.substring(i);
+				i -= algorithm.split;
+			}
+		}
 		$('<tr />')
 			.data('result', result)
 			.toggleClass('table-danger', (result.expectedHash !== '') && (result.hash !== result.expectedHash.toLowerCase()))
 			.toggleClass('table-success', (result.expectedHash !== '') && (result.hash === result.expectedHash.toLowerCase()))
-			.append('<td>' + result.name + '</td>')
+			.append('<td class="result">' + h + '</td>')
+			.append('<td>' + algorithm.title + '</td>')
 			.append('<td>' + formatFileSize(result.size) + '</td>')
-			.append('<td>' + digestAlgorithms.filter(function(a) { return a.name === result.algorithm; })[0].title + '</td>')
-			.append('<td class="result">' + result.hash + '</td>')
+			.append('<td>' + result.name + '</td>')
 			.appendTo(tbody);
 	}
 

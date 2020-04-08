@@ -47,14 +47,14 @@
 	<div class="bg-dark text-light" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
 </div>
 
-<div id="digest-table">
+<div id="digest-table" class="table-responsive">
 	<table class="table">
 		<thead>
 			<tr>
-				<th data-sort="name">Fichier</th>
-				<th data-sort="size">Taille</th>
-				<th data-sort="algorithm">Algorithme</th>
 				<th data-sort="hash">Résultat</th>
+				<th data-sort="algorithm">Algorithme</th>
+				<th data-sort="size">Taille</th>
+				<th data-sort="name">Fichier</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -77,6 +77,7 @@
 		<script type="text/javascript" src="./libs/forge/forge-custom-digest.min.js"></script>
 		<script type="text/javascript" src="./webapps-digest.js"></script>
 		<script>
+		/*
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', function() {
 				navigator.serviceWorker.register('./webapps-digest-sw.js').then(function(registration) {
@@ -88,6 +89,7 @@
 				});
 			});
 		}
+		*/
 		</script>
 	</body>
 </html>
