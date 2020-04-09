@@ -4,7 +4,7 @@ File integrity checker using MD5, SHA-1, SHA-256, SHA-384 &amp; SHA-512 digester
 
 ## Présentation
 
-[Cette application](https://techgp.fr/webapps/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet.
+[Cette application](https://techgp.fr:9005/webapps-digest/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet.
 
 L'application supporte les algorithmes suivants :
 
@@ -25,7 +25,7 @@ Les librairies suivantes sont utilisées pour cette application :
 
 ## Compilation de Forge
 
-La version de `Forge` utilisée a été recompilée manuellement pour n'inclure que ce qui nous intéresse (MD5 et SHA)
+La version de `Forge` utilisée a été recompilée manuellement pour n'inclure que ce qui nous intéresse (MD5, SHA-1, SHA-256 et SHA-512)
 
 - récupérer le repository
 
@@ -34,7 +34,7 @@ git clone --depth 1 --branch 0.9.1 https://github.com/digitalbazaar/forge.git
 cd forge
 ```
 
-- ajouter une cible webpack dans `webpack.config.js` pour n'inclure que ce qu'on souhaite (MD5 et SHA)
+- ajouter une cible webpack personnalisée dans `webpack.config.js` :
 
 ```javascript
 const outputs = [
