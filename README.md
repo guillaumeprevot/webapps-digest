@@ -4,7 +4,7 @@ File integrity checker using MD5, SHA-1, SHA-256, SHA-384 &amp; SHA-512 digester
 
 ## Présentation
 
-[Cette application](https://techgp.fr:9005/webapps-digest/webapps-digest.html) écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet.
+Cette application écrite en HTML5, JavaScript et CSS3 vous permettra de [contrôler l'intégrité de fichiers](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le), par exemple lorsque ceux-ci sont téléchargés depuis Internet, directement dans votre navigateur.
 
 L'application supporte les algorithmes suivants :
 
@@ -17,11 +17,14 @@ L'application supporte les algorithmes suivants :
 Les librairies suivantes sont utilisées pour cette application :
 
 - [Forge 0.9.1](https://github.com/digitalbazaar/forge)
-- [jQuery 3.4.1](https://jquery.com/)
+- [jQuery 3.5.0](https://jquery.com/)
 - [Bootstrap 4.4.1](https://getbootstrap.com/)
 - [Popper 1.16.1](https://popper.js.org/), dépendance de Bootstrap 4
 - [Material Icons](https://material.io/tools/icons) pour les boutons
 - [DryIcons](https://dryicons.com/) pour le favicon
+
+L'application devrait fonctionner correctement est mode déconnecté grâce aux **Service Workers** sous Chrome, Firefox et [d'autres](https://caniuse.com/#search=service+worker).
+Plus d'infos chez [Google](https://developers.google.com/web/fundamentals/primers/service-workers/) ou [Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
 
 ## Compilation de Forge
 
