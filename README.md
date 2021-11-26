@@ -153,3 +153,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 - correction de l'ordre des colonnes dans le fichier exporté (les hash à gauche et les noms de fichiers à droite)
 - correction de la lecture des fichiers de hash en cas d'espace dans le nom des fichiers
 - mise à jour de Bootstrap (4.4.1), Popper (1.16.1) et Forge (0.9.1)
+
+2021-11-26
+- correction d'un souci de comparaison de hash dû au caractère "zero width space" utilisé pour afficher les hash longs sur plusieurs lignes

@@ -3,7 +3,7 @@
  * - GOOGLE : https://developers.google.com/web/fundamentals/primers/service-workers/#update-a-service-worker
  * - MOZILLA : https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
  */
-var cacheName = 'v3';
+var cacheName = 'v4';
 var baseCacheContent = [
 	'./libs/bootstrap/css/bootstrap.min.css',
 	'./libs/bootstrap/js/bootstrap.min.js',
@@ -26,7 +26,7 @@ function info(text) {
 	console.log('Service Worker : ' + text);
 }
 
-function trace(text) {
+function trace(_text) {
 	// console.log('Service Worker : ' + text);
 }
 

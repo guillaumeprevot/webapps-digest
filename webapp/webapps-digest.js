@@ -134,6 +134,9 @@ $(function() {
 	digestAlgorithms.push({name: 'sha384', title: 'SHA-384', hashSize: 384, split: 32 });
 	digestAlgorithms.push({name: 'sha512', title: 'SHA-512', hashSize: 512, split: 32 });
 
+	var zeroWidthSpaceHTML = '&#8203;';
+	var zeroWidthSpaceChar = '\u200B';
+
 	$('#digest-algorithm-menu').append($.map(digestAlgorithms, function(digest, index) {
 		if (digest.isDefault)
 			$('#digest-algorithm-button span').text(digest.title);
@@ -165,7 +168,7 @@ $(function() {
 	});
 
 	$('#digest-compare-input').on('change', function() {
-		var compareValue = this.value.toLowerCase();
+		var compareValue = this.value.toLowerCase().replace(zeroWidthSpaceChar, '');
 		$('#digest-table td.result').each(function(index) {
 			var tr = $(this).parent(), result = tr.data('result');
 			tr.toggleClass('table-success', !!compareValue && (result.hash === compareValue))
@@ -208,9 +211,9 @@ $(function() {
 		var algorithm = digestAlgorithms.filter(function(a) { return a.name === result.algorithm; })[0];
 		var h = result.hash;
 		if (algorithm.split) {
-			var i = result.hash.length - algorithm.split, zeroLengthSpace = '&#8203;';
+			var i = result.hash.length - algorithm.split;
 			while (i > 0) {
-				h = h.substring(0, i) + zeroLengthSpace + h.substring(i);
+				h = h.substring(0, i) + zeroWidthSpaceHTML + h.substring(i);
 				i -= algorithm.split;
 			}
 		}
@@ -234,7 +237,7 @@ $(function() {
 			var tbody = $('#digest-table tbody'),
 				progress = new Progress($('#digest-progress').children()),
 				algorithm = $('#digest-algorithm-menu .active').attr('data-algorithm'),
-				compareValue = $('#digest-compare-input').val();
+				compareValue = $('#digest-compare-input').val().toLowerCase().replace(zeroWidthSpaceChar, '');
 
 			var worker = new Worker('webapps-digest-ww.js');
 			worker.postMessage({
