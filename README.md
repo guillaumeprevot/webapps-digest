@@ -156,3 +156,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2021-11-26
 - correction d'un souci de comparaison de hash dû au caractère "zero width space" utilisé pour afficher les hash longs sur plusieurs lignes
+
+2022-02-27
+- correction d'un plantage sous Chrome / Edge dont la limite de paramètres est plus basse que sous Firefox

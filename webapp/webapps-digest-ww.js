@@ -4,6 +4,11 @@ self.addEventListener('message', function(event) {
 	digest(event.data.files, event.data.checksums, event.data.defaultAlgorithm, event.data.compareValue);
 });
 
+// Firefox is fine with 64Ko slices when we call String.fromCharCode and is faster than with 32Ko slices.
+// But Chrome and Edge throw an error with 64Ko slices while they accept 32Ko slices (empirical method)
+// The digest algorithm will try 64Ko (to improve Firefox) and downgrade to 32Ko (if an error occurred on Chrome/Edge).
+var sliceLength = 64 * 1024;
+
 function digest(files, checksums, defaultAlgorithm, compareValue) {
 	if (!files || files.length == 0)
 		return;
@@ -23,7 +28,6 @@ function digest(files, checksums, defaultAlgorithm, compareValue) {
 			const fileAlgorithm = checksum ? checksum.algorithm : defaultAlgorithm;
 			const fileExpectedValue = checksum ? checksum.checksum : compareValue;
 			const fileDigest = forge.md[fileAlgorithm].create();
-			const sliceLength = 64 * 1024;
 			fileDigest.start();
 			reader.read().then(function process(data) {
 				// "data" objects contain two properties:
@@ -44,8 +48,15 @@ function digest(files, checksums, defaultAlgorithm, compareValue) {
 	
 				// Update digest, 64Ko at a time
 				for (var i = 0; i < data.value.length; i += sliceLength) {
-					//fileDigest.update(forge.util.binary.raw.encode(data.value.slice(i, i + sliceLength)));
-					fileDigest.update(String.fromCharCode.apply(null, data.value.slice(i, i + sliceLength)));
+					try {
+						//fileDigest.update(forge.util.binary.raw.encode(data.value.slice(i, i + sliceLength)));
+						fileDigest.update(String.fromCharCode.apply(null, data.value.slice(i, i + sliceLength)));
+					} catch (error) {
+						console.log('An error occurred with a 64Ko buffer. Trying to switch to a 32Ko buffer.')
+						sliceLength = 32 * 1024;
+						//fileDigest.update(forge.util.binary.raw.encode(data.value.slice(i, i + sliceLength)));
+						fileDigest.update(String.fromCharCode.apply(null, data.value.slice(i, i + sliceLength)));
+					}
 					// Update progress
 					self.postMessage({ type: 'progress', done: doneSize + i, total: totalSize });
 					// console.log('progress', Math.round((doneSize + i + sliceLength) * 100 / totalSize));
