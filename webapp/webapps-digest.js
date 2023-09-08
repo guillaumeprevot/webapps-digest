@@ -129,15 +129,15 @@ function formatFileSize(size) {
 $(function() {
 	var digestAlgorithms = [];
 	digestAlgorithms.push({name: 'md5', title: 'MD5', hashSize: 128, split: false });
-	digestAlgorithms.push({name: 'sha1', title: 'SHA-1', hashSize: 160, split: 20, isDefault: true });
-	digestAlgorithms.push({name: 'sha256', title: 'SHA-256', hashSize: 256, split: 32 });
+	digestAlgorithms.push({name: 'sha1', title: 'SHA-1', hashSize: 160, split: 20 });
+	digestAlgorithms.push({name: 'sha256', title: 'SHA-256', hashSize: 256, split: 32, isDefault: true });
 	digestAlgorithms.push({name: 'sha384', title: 'SHA-384', hashSize: 384, split: 32 });
 	digestAlgorithms.push({name: 'sha512', title: 'SHA-512', hashSize: 512, split: 32 });
 
 	var zeroWidthSpaceHTML = '&#8203;';
 	var zeroWidthSpaceChar = '\u200B';
 
-	$('#digest-algorithm-menu').append($.map(digestAlgorithms, function(digest, index) {
+	$('#digest-algorithm-menu').append(digestAlgorithms.map((digest, _index) => {
 		if (digest.isDefault)
 			$('#digest-algorithm-button span').text(digest.title);
 		return $('<button type="button" class="dropdown-item" />').attr('data-algorithm', digest.name).text(digest.title).toggleClass('active', !!digest.isDefault)[0];
@@ -169,7 +169,7 @@ $(function() {
 
 	$('#digest-compare-input').on('change', function() {
 		var compareValue = this.value.toLowerCase().replace(zeroWidthSpaceChar, '');
-		$('#digest-table td.result').each(function(index) {
+		$('#digest-table td.result').each(function(_index) {
 			var tr = $(this).parent(), result = tr.data('result');
 			tr.toggleClass('table-success', !!compareValue && (result.hash === compareValue))
 				.toggleClass('table-danger', !!compareValue && (result.hash !== compareValue));
@@ -178,7 +178,7 @@ $(function() {
 
 	$('#digest-download-button').on('click', function() {
 		var algorithm = $('#digest-algorithm-menu .active').attr('data-algorithm');
-		var text = $('#digest-table tbody tr').map(function(index) {
+		var text = $('#digest-table tbody tr').map(function(_index) {
 			var result = $(this).data('result');
 			if (result.algorithm === algorithm)
 				return result.hash + '\t' + result.name;
@@ -255,6 +255,8 @@ $(function() {
 					showResult(tbody, { name: event.data.file.name, size: event.data.file.size, algorithm: event.data.algorithm, hash: event.data.hash, expectedHash: event.data.expectedHash});
 				} else if (event.data.type === 'stop') {
 					progress.onstop();
+				} else if (event.data.type === 'error') {
+					console.error(event.data.message);
 				} else {
 					console.log('unexpected message', event.data);
 				}

@@ -159,3 +159,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2022-02-27
 - correction d'un plantage sous Chrome / Edge dont la limite de paramètres est plus basse que sous Firefox
+
+2023-09-08
+- correction d'un plantage sous Firefox, utilisation de getReader({ mode: "byob" }) et réorganisation du code
