@@ -16,7 +16,7 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [Forge 0.9.1](https://github.com/digitalbazaar/forge)
+- [Forge 1.3.1](https://github.com/digitalbazaar/forge)
 - [jQuery 3.5.0](https://jquery.com/)
 - [Bootstrap 4.4.1](https://getbootstrap.com/)
 - [Popper 1.16.1](https://popper.js.org/), dépendance de Bootstrap 4
@@ -33,11 +33,11 @@ La version de `Forge` utilisée a été recompilée manuellement pour n'inclure 
 - récupérer le repository
 
 ```bash
-git clone --depth 1 --branch 0.9.1 https://github.com/digitalbazaar/forge.git
+git clone --depth 1 --branch v1.3.1 https://github.com/digitalbazaar/forge.git
 cd forge
 ```
 
-- ajouter une cible webpack personnalisée dans `webpack.config.js` :
+- remplacer les cibles webpack par une cible personnalisée dans `webpack.config.js` :
 
 ```javascript
 const outputs = [
@@ -49,6 +49,40 @@ const outputs = [
   }
 
 ];
+```
+
+- ajuster les options de webpack que Forge fonctionne en web-worker ([source](https://github.com/digitalbazaar/forge/pull/819)) :
+
+```diff
+@@ -83,7 +83,8 @@ outputs.forEach(info => {
+      path: path.join(__dirname, 'dist'),
+      filename: info.filenameBase + '.js',
+      library: info.library || '[name]',
+-      libraryTarget: info.libraryTarget || 'umd'
++      libraryTarget: info.libraryTarget || 'umd',
++      globalObject: 'this'
+    }
+  });
+  if(info.library === null) {
+@@ -100,7 +101,8 @@ outputs.forEach(info => {
+      path: path.join(__dirname, 'dist'),
+      filename: info.filenameBase + '.min.js',
+      library: info.library || '[name]',
+-      libraryTarget: info.libraryTarget || 'umd'
++      libraryTarget: info.libraryTarget || 'umd',
++      globalObject: 'this'
+    },
+    devtool: 'cheap-module-source-map',
+    plugins: [
+```
+
+- éviter le plantage de Forge à la compilation sur les versions récentes de Node.js ([source](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported)) :
+
+```bash
+#linux
+export NODE_OPTIONS=--openssl-legacy-provider
+#windows
+set NODE_OPTIONS=--openssl-legacy-provider
 ```
 
 - construire Forge
@@ -162,3 +196,4 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 
 2023-09-08
 - correction d'un plantage sous Firefox, utilisation de getReader({ mode: "byob" }) et réorganisation du code
+- mise à jour de Forge 0.9.1 => 1.3.1 et mise à jour des instructions de compilation de Forge
