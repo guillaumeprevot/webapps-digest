@@ -17,10 +17,10 @@ L'application supporte les algorithmes suivants :
 Les librairies suivantes sont utilisées pour cette application :
 
 - [Forge 1.3.1](https://github.com/digitalbazaar/forge)
-- [jQuery 3.5.0](https://jquery.com/)
-- [Bootstrap 4.4.1](https://getbootstrap.com/)
+- [jQuery 3.7.1](https://jquery.com/)
+- [Bootstrap 4.6.2](https://getbootstrap.com/)
 - [Popper 1.16.1](https://popper.js.org/), dépendance de Bootstrap 4
-- [Material Icons](https://material.io/tools/icons) pour les boutons
+- [Material Icons](https://fonts.google.com/icons) pour les boutons
 - [DryIcons](https://dryicons.com/) pour le favicon
 
 L'application devrait fonctionner correctement est mode déconnecté grâce aux **Service Workers** sous Chrome, Firefox et [d'autres](https://caniuse.com/#search=service+worker).
@@ -197,3 +197,4 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 2023-09-08
 - correction d'un plantage sous Firefox, utilisation de getReader({ mode: "byob" }) et réorganisation du code
 - mise à jour de Forge 0.9.1 => 1.3.1 et mise à jour des instructions de compilation de Forge
+- mise à jour de Bootstrap 4.4.1 => 4.6.2 et jQuery 3.5.0 => 3.7.1
