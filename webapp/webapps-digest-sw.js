@@ -3,7 +3,7 @@
  * - GOOGLE : https://developers.google.com/web/fundamentals/primers/service-workers/#update-a-service-worker
  * - MOZILLA : https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
  */
-var cacheName = '20230908';
+var cacheName = '20251127';
 var baseCacheContent = [
 	'./libs/bootstrap/css/bootstrap.min.css',
 	'./libs/bootstrap/js/bootstrap.min.js',

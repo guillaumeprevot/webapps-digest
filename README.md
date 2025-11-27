@@ -16,7 +16,7 @@ L'application supporte les algorithmes suivants :
 
 Les librairies suivantes sont utilisées pour cette application :
 
-- [Forge 1.3.1](https://github.com/digitalbazaar/forge)
+- [Forge 1.3.2](https://github.com/digitalbazaar/forge)
 - [jQuery 3.7.1](https://jquery.com/)
 - [Bootstrap 4.6.2](https://getbootstrap.com/)
 - [Popper 1.16.1](https://popper.js.org/), dépendance de Bootstrap 4
@@ -33,7 +33,7 @@ La version de `Forge` utilisée a été recompilée manuellement pour n'inclure 
 - récupérer le repository
 
 ```bash
-git clone --depth 1 --branch v1.3.1 https://github.com/digitalbazaar/forge.git
+git clone --depth 1 --branch v1.3.2 https://github.com/digitalbazaar/forge.git
 cd forge
 ```
 
@@ -74,15 +74,6 @@ const outputs = [
     },
     devtool: 'cheap-module-source-map',
     plugins: [
-```
-
-- éviter le plantage de Forge à la compilation sur les versions récentes de Node.js ([source](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported)) :
-
-```bash
-#linux
-export NODE_OPTIONS=--openssl-legacy-provider
-#windows
-set NODE_OPTIONS=--openssl-legacy-provider
 ```
 
 - construire Forge
@@ -198,3 +189,6 @@ Ce projet est distribué sous licence MIT, reproduite dans le fichier LICENSE ic
 - correction d'un plantage sous Firefox, utilisation de getReader({ mode: "byob" }) et réorganisation du code
 - mise à jour de Forge 0.9.1 => 1.3.1 et mise à jour des instructions de compilation de Forge
 - mise à jour de Bootstrap 4.4.1 => 4.6.2 et jQuery 3.5.0 => 3.7.1
+
+2025-11-27
+- mise à jour de Forge 1.3.1 => 1.3.2 et des instructions pour sa compilation

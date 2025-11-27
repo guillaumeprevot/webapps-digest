@@ -9,10 +9,14 @@
 function Progress(progressBar) {
 	var progressPct, progressInterval;
 	function refresh() {
-		progressBar.attr('aria-valuenow', progressPct.toFixed(0)).css('width', progressPct + '%').html('&nbsp;' + progressPct.toFixed(0) + '%');
+		progressBar.attr('aria-valuenow', progressPct.toFixed(0))
+			.css('width', progressPct + '%')
+			.html('&nbsp;' + progressPct.toFixed(0) + '%');
 	}
 	this.onstart = function() {
-		progressBar.attr('aria-valuenow', '0').css('width', '0').html('');
+		progressBar.attr('aria-valuenow', '0')
+			.css('width', '0')
+			.html('');
 		progressBar.parent().show();
 		progressPct = 0;
 		progressInterval = setInterval(refresh, 1000);
@@ -127,12 +131,13 @@ function formatFileSize(size) {
 }
 
 $(function() {
-	var digestAlgorithms = [];
-	digestAlgorithms.push({name: 'md5', title: 'MD5', hashSize: 128, split: false });
-	digestAlgorithms.push({name: 'sha1', title: 'SHA-1', hashSize: 160, split: 20 });
-	digestAlgorithms.push({name: 'sha256', title: 'SHA-256', hashSize: 256, split: 32, isDefault: true });
-	digestAlgorithms.push({name: 'sha384', title: 'SHA-384', hashSize: 384, split: 32 });
-	digestAlgorithms.push({name: 'sha512', title: 'SHA-512', hashSize: 512, split: 32 });
+	var digestAlgorithms = [
+		{ name: 'md5', title: 'MD5', hashSize: 128, split: false },
+		{ name: 'sha1', title: 'SHA-1', hashSize: 160, split: 20 },
+		{ name: 'sha256', title: 'SHA-256', hashSize: 256, split: 32, isDefault: true },
+		{ name: 'sha384', title: 'SHA-384', hashSize: 384, split: 32 },
+		{ name: 'sha512', title: 'SHA-512', hashSize: 512, split: 32 }
+	];
 
 	var zeroWidthSpaceHTML = '&#8203;';
 	var zeroWidthSpaceChar = '\u200B';
@@ -140,10 +145,15 @@ $(function() {
 	$('#digest-algorithm-menu').append(digestAlgorithms.map((digest, _index) => {
 		if (digest.isDefault)
 			$('#digest-algorithm-button span').text(digest.title);
-		return $('<button type="button" class="dropdown-item" />').attr('data-algorithm', digest.name).text(digest.title).toggleClass('active', !!digest.isDefault)[0];
+		return $('<button type="button" class="dropdown-item" />')
+			.attr('data-algorithm', digest.name)
+			.text(digest.title)
+			.toggleClass('active', !!digest.isDefault)
+			.get(0);
 	})).on('click', '.dropdown-item', function(event) {
 		var button = $(event.target).closest('button');
-		button.addClass('active').siblings().removeClass('active');
+		button.addClass('active')
+			.siblings().removeClass('active');
 		$('#digest-algorithm-button span').text(button.text());
 		$('#digest-table tbody').empty();
 		$('#digest-files-input').trigger('change');
